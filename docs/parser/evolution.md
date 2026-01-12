@@ -20,7 +20,7 @@
     * **代码块保护**：正则识别 ` ``` ` 符号，严禁在代码块内部切分，保证代码逻辑完整。
     * **表格保护**：识别 Markdown 表格结构，确保一行数据不被拆分到两个 Chunk 中。
 4.  **元数据丰富化 (Metadata Enrichment)**：
-    * 每个 Chunk 自动携带：`file_name`, `title_path`, `last_updated`, `depth` 等标签，方便后续进行元数据过滤。
+    * 每个 Chunk 自动携带：source_file（源文件路径）、breadcrumb（标题路径，格式：文件名 > 父标题 > 子标题）、parent_header（父级标题路径）、heading（当前标题）、heading_level（标题层级，1-6）、format（文件格式）、inherited_heading（是否继承标题）等标签，方便后续进行元数据过滤。
 
 ### 💡 自身思考 (Insights)
 1.  **RAG 的胜负手在数据清洗**：很多人在拼命调优 Embedding 模型，但实际经验告诉我们，**解析时多做一分努力，检索时能省十分力气**。
