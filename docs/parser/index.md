@@ -1,15 +1,28 @@
-### 🔄 当前状态：基于 Markdown 结构的智能分块 (Smart Structure-Aware Chunking)
+### 🔄 Current Status: Smart Structure-Aware Chunking
 
-核心逻辑如下：
+The core logic is as follows:
 
-1.  **基于标题切分 (Heading-based)**：
-    * 以 `#` 到 `###` 作为自然边界。优先保证同一个小标题下的内容完整性。
-2.  **上下文继承与 Breadcrumb (面包屑策略)**：
-    * **实现**：每个 Chunk 都会自动注入其所属的标题路径。
-    * **示例**：`[用户中心 -> 接口文档 -> 登录接口]：这是具体的参数说明...`
-    * **价值**：即使该 Chunk 被单独检索出来，Agent 也能通过前缀瞬间定位其语义背景。
-3.  **块边界保护 (Boundary Protection)**：
-    * **代码块保护**：正则识别 ` ``` ` 符号，严禁在代码块内部切分，保证代码逻辑完整。
-    * **表格保护**：识别 Markdown 表格结构，确保一行数据不被拆分到两个 Chunk 中。
-4.  **元数据丰富化 (Metadata Enrichment)**：
-    * 每个 Chunk 自动携带：source_file（源文件路径）、breadcrumb（标题路径，格式：文件名 > 父标题 > 子标题）、parent_header（父级标题路径）、heading（当前标题）、heading_level（标题层级，1-6）、format（文件格式）、inherited_heading（是否继承标题）等标签，方便后续进行元数据过滤。
+1. **Heading-based Partitioning**
+* Uses `#` through `###` as natural boundaries. Priority is given to maintaining the integrity of content under the same subheading.
+
+
+2. **Contextual Inheritance & Breadcrumbs**
+* **Implementation**: Each chunk automatically injects its corresponding heading path.
+* **Example**: `[User Center -> API Docs -> Login API]: These are the specific parameter descriptions...`
+* **Value**: Even if a chunk is retrieved in isolation, the Agent can instantly identify its semantic context via the prefix.
+
+
+3. **Boundary Protection**
+* **Code Block Protection**: Uses Regex to identify ````` symbols, strictly prohibiting splits within code blocks to ensure logical integrity.
+* **Table Protection**: Identifies Markdown table structures to ensure a single row of data is never split across two chunks.
+
+
+4. **Metadata Enrichment**
+* Each chunk automatically carries tags for downstream metadata filtering, including:
+* `source_file`: Original file path.
+* `breadcrumb`: Heading path (Format: Filename > Parent Heading > Subheading).
+* `parent_header`: Path of the parent heading.
+* `heading`: Current heading title.
+* `heading_level`: Heading level (1–6).
+* `format`: File format (e.g., Markdown).
+* `inherited_heading`: Boolean flag indicating if the heading was inherited.
