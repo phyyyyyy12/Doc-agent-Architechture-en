@@ -1,52 +1,51 @@
-## 🧠 Memory 模块演进：从“数轮数”到“算 Token”
+# 🧠 Memory Module Evolution: From "Turn-Based" to "Token-Aware"
 
-> "在处理文档 Agent 时，记忆的本质是维持任务轨迹的连贯，而非对话的复读。"
+> "In the context of Document Agents, the essence of memory is maintaining task trajectory coherence, not merely echoing dialogues."
 
-### 📅 项目里程碑
+### 📅 Project Milestones
 
-#### **v3.0 - 动态 Token 窗口管理 (Current)** `2026-01-18`
+#### **v3.0 - Dynamic Token Window Management (Current)** `2026-01-18`
 
-* **核心理念：** 基于模型容量实时精算，确保核心指令永不丢失。
-* **关键改进：**
-* **差异化留存：** 永久固定 `System Prompt`；仅保留最近 2 轮的 **Full Text** 以维持即时语境。
-* **摘要压缩 (Summary)：** 对中间轮次产生的超长 MD 解析结果、工具返回原始数据进行**语义压缩**。
-* **精细化剔除：** 自动识别并过滤检索过程中的调试日志、错误信息（如 "Search failed"）等噪声。
+* **Core Philosophy:** Real-time actuarial calculation based on model capacity to ensure core instructions are never lost.
+* **Key Improvements:**
+* **Differential Retention:** Permanently anchor the `System Prompt`; retain **Full Text** only for the most recent 2 turns to preserve immediate context.
+* **Semantic Compression (Summary):** Apply **Summarization** to ultra-long Markdown parsing results and raw tool outputs from intermediate turns.
+* **Granular Pruning:** Automatically identify and filter out noise, such as retrieval debug logs or error messages (e.g., "Search failed").
 
 
-* **价值：** 彻底解决长文档 RAG 场景下的上下文溢出问题，提升 Agent 决策稳定性。
+* **Value:** Completely resolves **Context Overflow** in long-document RAG scenarios, significantly enhancing Agent decision stability.
 
-#### **v2.0 - 固定 K 轮记忆 (Window-based)** `2026-01-04`
+#### **v2.0 - Fixed K-Turn Memory (Window-based)** `2026-01-04`
 
-* **做法：** 设置 ，固定保留最近 6 轮对话文本。
-* **痛点：** 遇到超长 MD 片段时，固定轮数无法限制 Token 总量，极易触发 **Context Overflow**，导致 Agent 瞬间“失忆”。
+* **Approach:** Implemented a fixed sliding window (e.g., ) to keep the last 6 dialogue exchanges.
+* **Pain Points:** When encountering massive Markdown fragments, fixed turn counts fail to limit total tokens. This frequently triggered **Context Overflow**, causing the Agent to suffer "instant amnesia."
 
-#### **v1.0 - 原始数据全保存 (Naive Storage)** `2025-12-22`
+#### **v1.0 - Raw Data Persistence (Naive Storage)** `2025-12-22`
 
-* **做法：** 完整保存工具返回的所有原始数据（Raw Data）并塞入上下文。
-* **痛点：** **上下文污染严重**。大量不相关的文档片段、中间调试信息、冗余的错误提示污染了 Prompt，模型经常被无关信息误导。
+* **Approach:** Full persistence of all raw tool outputs directly into the context.
+* **Pain Points:** **Severe Context Pollution**. Massive amounts of irrelevant document snippets, intermediate debugging info, and redundant error prompts polluted the prompt, often misleading the model.
 
 ---
 
-## ⚖️ 方案对比 (Comparison)
+## ⚖️ Architecture Comparison
 
-| 特性 | v1.0 原始全保存 | v2.0 固定 K 轮 | v3.0 动态 Token 管理 |
+| Feature | v1.0 Raw Persistence | v2.0 Fixed K-Turns | v3.0 Dynamic Token Management |
 | --- | --- | --- | --- |
-| **判定标准** | 无限制 | 轮数 (e.g., K=6) | **剩余 Token 空间** |
-| **长文档容忍度** | 极低（直接爆仓） | 较低（易溢出） | **极高（自动摘要压缩）** |
-| **数据纯净度** | 充斥大量噪声/调试信息 | 包含冗余 raw data | **精纯（仅保留轨迹摘要）** |
-| **稳定性** | 极差 | 不稳定 | **极强（核心指令永存）** |
+| **Criteria** | Unrestricted | Number of turns (e.g., K=6) | **Available Token Space** |
+| **Long-Doc Tolerance** | Extremely Low (Immediate Overflow) | Low (Prone to Overflow) | **Extremely High (Auto-Summarization)** |
+| **Data Purity** | High Noise / Debug Info | Contains Redundant Raw Data | **Refined (Trajectory Summaries Only)** |
+| **Stability** | Poor | Unstable | **Robust (Core Instructions Anchored)** |
 
 ---
 
-## 💡 自身思考 (Insights)
+## 💡 Insights
 
-* **区分“用户语料”与“工具产物”：** 初始阶段（v1.0）失败的核心在于把工具返回的“中间过程”当成了“对话内容”。在 RAG 场景下，工具返回的数据需要经过**二次处理**才能进入记忆。
-* **瞬时记忆 vs 检索轨迹：** 记忆系统不应只是存储，更应该是**过滤器**。v3.0 的改动让我意识到，高效的 Agent 需要在每一轮对话中动态平衡“历史广度”与“信息深度”。
+* **Distinguishing "User Corpus" from "Tool Artifacts":** The failure of v1.0 stemmed from treating "intermediate processes" as "dialogue content." In RAG scenarios, tool-returned data requires **secondary processing** before entering memory.
+* **Ephemeral Memory vs. Retrieval Trajectory:** A memory system should act as a **filter**, not just storage. The v3.0 transition taught me that an efficient Agent must dynamically balance "historical breadth" and "informational depth" in every turn.
 
 ---
 
-## 🔮 未来挑战 (Roadmap)
+## 🔮 Roadmap & Future Challenges
 
-* [ ] **语义重要性评分：** 引入模型评分，优先保留对当前问题解决贡献度最高的记忆碎片。
-* [ ] **长效记忆挂载：** 结合向量数据库，实现基于语义触发的“长程记忆检索”。
-
+* [ ] **Semantic Importance Scoring:** Introduce model-based scoring to prioritize the retention of memory fragments that contribute most to the current task.
+* [ ] **Long-term Memory Mounting:** Integrate vector databases to implement "Long-term Memory Retrieval" triggered by semantic relevance.
