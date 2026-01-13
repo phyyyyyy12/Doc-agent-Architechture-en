@@ -7,8 +7,8 @@
 | Core Components | 💡 Current Implementation (Status Quo) | 🔄 Architectural Evolution (ADR/Deep Dive) |
 | --- | --- | --- |
 | **1. Memory Management** | [Dynamic Token Window & Semantic Compression](./docs/memory/index.md) | [From "Keep Everything" to "Token Efficiency"](./docs/memory/evolution.md) |
-| **2. Document Parser** | [Markdown Structure-Aware Intelligent Chunking](https://www.google.com/search?q=./docs/parser/index.md) | [From "Brute-Force Splitting" to "Structural Awareness"](https://www.google.com/search?q=./docs/parser/evolution.md) |
-| **3. Query Optimization** | [Semantic Hierarchy Retrieval Strategy](https://www.google.com/search?q=./docs/query/index.md) | [Leveraging Markdown Structure to Boost Recall](https://www.google.com/search?q=./docs/query/evolution.md) |
+| **2. Document Parser** | [Markdown Structure-Aware Intelligent Chunking](./docs/parser/index.md) | [From "Brute-Force Splitting" to "Structural Awareness"](./docs/parser/evolution.md) |
+| **3. Query Optimization** | [Semantic Hierarchy Retrieval Strategy](./docs/query/index.md) | [Leveraging Markdown Structure to Boost Recall](./docs/query/evolution.md) |
 
 ---
 
