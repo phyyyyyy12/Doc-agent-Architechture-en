@@ -1,4 +1,4 @@
-# 🏢 Doc-Agent Architecture
+# 🏢 Tec-Document-Agent Architecture
 
 > A record of architectural evolution for enterprise-grade Q&A Agents based on deep Markdown parsing.
 
