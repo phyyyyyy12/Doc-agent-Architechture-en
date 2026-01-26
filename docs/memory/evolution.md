@@ -4,7 +4,7 @@
 
 ### 📅 Project Milestones
 
-#### **v3.0 - Dynamic Token Window Management (Current)** `2026-01-18`
+#### **v3.0 - Dynamic Token Window Management (Current)** ``
 
 * **Core Philosophy:** Real-time actuarial calculation based on model capacity to ensure core instructions are never lost.
 * **Key Improvements:**
@@ -15,12 +15,12 @@
 
 * **Value:** Completely resolves **Context Overflow** in long-document RAG scenarios, significantly enhancing Agent decision stability.
 
-#### **v2.0 - Fixed K-Turn Memory (Window-based)** `2026-01-04`
+#### **v2.0 - Fixed K-Turn Memory (Window-based)** ``
 
 * **Approach:** Implemented a fixed sliding window (e.g., ) to keep the last 6 dialogue exchanges.
 * **Pain Points:** When encountering massive Markdown fragments, fixed turn counts fail to limit total tokens. This frequently triggered **Context Overflow**, causing the Agent to suffer "instant amnesia."
 
-#### **v1.0 - Raw Data Persistence (Naive Storage)** `2025-12-22`
+#### **v1.0 - Raw Data Persistence (Naive Storage)** ``
 
 * **Approach:** Full persistence of all raw tool outputs directly into the context.
 * **Pain Points:** **Severe Context Pollution**. Massive amounts of irrelevant document snippets, intermediate debugging info, and redundant error prompts polluted the prompt, often misleading the model.
